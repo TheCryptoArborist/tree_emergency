@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { buildPublicPayload } from "@/lib/emergency/dashboard";
+import { getPublicPayload } from "@/lib/emergency/dashboard";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const payload = buildPublicPayload();
+  const payload = await getPublicPayload();
 
   return NextResponse.json(payload, {
     status: 200,
