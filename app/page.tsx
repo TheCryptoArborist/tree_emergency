@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { AlertTriangle, ClipboardList, CloudLightning, Map, ShieldCheck, TreePine } from "lucide-react";
+import { operatingLevels, reportCategories, verificationStatuses } from "@/lib/emergency-model";
 
 const priorities = [
   {
@@ -35,6 +37,7 @@ export default function HomePage() {
           <nav className="nav" aria-label="Primary navigation">
             <a href="#status">Status</a>
             <a href="#safety">Safety</a>
+            <a href="#operations">Operating Levels</a>
             <a href="#reporting">Reporting</a>
             <a href="#map">Future Map</a>
           </nav>
@@ -50,7 +53,7 @@ export default function HomePage() {
           </p>
           <div className="actions">
             <a className="button button-primary" href="#safety">Review tree safety guidance</a>
-            <a className="button button-secondary" href="#reporting">Learn what to report</a>
+            <Link className="button button-secondary" href="/report">Preview report form</Link>
           </div>
         </div>
       </section>
@@ -58,10 +61,10 @@ export default function HomePage() {
       <section className="section" id="status">
         <div className="container">
           <div className="card status">
-            <div className="status-label">Development status</div>
-            <h2>Foundation build in progress</h2>
+            <div className="status-label">Current operating level</div>
+            <h2>Level 0 — Normal</h2>
             <p className="section-intro">
-              The public reporting workflow, verification process, operating levels, and generalized map are not yet active. This page establishes the safety-first structure for the future platform.
+              No public reporting operation is active. Preparedness information and the reporting workflow preview remain available while moderation, storage, and mapping controls are completed.
             </p>
           </div>
         </div>
@@ -86,22 +89,62 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section" id="reporting">
+      <section className="section" id="operations">
         <div className="container">
-          <span className="eyebrow">Future reporting workflow</span>
-          <h2>Reports will support awareness—not emergency dispatch.</h2>
+          <span className="eyebrow">Operating framework</span>
+          <h2>Four levels define when the platform is active.</h2>
+          <p className="section-intro">Operating levels prevent a preparedness website from appearing to be an active dispatch or reporting system when no event operation has been opened.</p>
+          <div className="grid grid-four">
+            {operatingLevels.map((level) => (
+              <article className="card" key={level.id}>
+                <div className="status-label">{level.label}</div>
+                <p>{level.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt" id="reporting">
+        <div className="container">
+          <span className="eyebrow">Reporting workflow</span>
+          <h2>Reports support awareness—not emergency dispatch.</h2>
           <p className="section-intro">
-            The planned reporting system will collect public-safe information about storm-damaged trees and blocked access. Exact residential addresses will not be displayed publicly by default, and every submission will remain subject to verification.
+            The planned system will collect public-safe information about storm-damaged trees and blocked access. Exact residential addresses will not be displayed publicly by default, and every submission will remain subject to screening and verification.
           </p>
+
+          <div className="split-grid">
+            <div>
+              <h3>Report categories</h3>
+              <div className="stack-list">
+                {reportCategories.map((category) => (
+                  <div className="list-row" key={category.id}><TreePine size={18} aria-hidden="true" /><span>{category.label}</span></div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3>Verification path</h3>
+              <div className="stack-list">
+                {verificationStatuses.map((status) => (
+                  <div className="list-row" key={status.id}><ShieldCheck size={18} aria-hidden="true" /><span>{status.label}{status.public ? " — public eligible" : " — internal only"}</span></div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="grid">
             <article className="card"><CloudLightning size={26} aria-hidden="true" /><h3>Event context</h3><p>Storm name or weather event, approximate time, and observed conditions.</p></article>
             <article className="card"><TreePine size={26} aria-hidden="true" /><h3>Tree condition</h3><p>Whole-tree failure, broken limb, split trunk, severe lean, uprooting, or obstruction.</p></article>
             <article className="card"><Map size={26} aria-hidden="true" /><h3>Generalized location</h3><p>Public map placement designed to protect private residential information.</p></article>
           </div>
+
+          <div className="actions">
+            <Link className="button button-primary" href="/report">Preview the public report form</Link>
+          </div>
         </div>
       </section>
 
-      <section className="section section-alt" id="map">
+      <section className="section" id="map">
         <div className="container">
           <span className="eyebrow">Coming soon</span>
           <h2>Generalized emergency tree map</h2>
